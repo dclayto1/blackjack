@@ -24,13 +24,26 @@ class Blackjack:
 	def getRules(self):
 		return self.__rules
 
+	def setRules(self, rule):
+		self.__rules = rule
+
 
 	def getNumPlayers(self):
 		return self.__numPlayers
 
+	def setNumPlayers(self, num):
+		self.__numPlayers = num
+
 
 	def getDeck(self):
 		return self.__deck
+
+
+	def getNumDecks(self):
+		return self.__deck.getNumberOfDecks()
+
+	def setNumDecks(self, num):
+		self.__deck.setNumberOfDecks(num)
 
 
 	def startShoe(self, numDecks):
@@ -59,16 +72,3 @@ class Blackjack:
 
 	def update(self):
 		print "update"
-
-
-'''def main():
-	deck1 = deck.Deck()
-	deck1.initDeck()
-	deck1.displayDeck()
-	
-
-
-
-
-
-main()'''

@@ -1,14 +1,9 @@
 import blackjack
-import Tkinter
-
-
-def update(game):
-	while game.getGameState() == True:
-		game.update()
+import blackjack_app
 
 
 def test(game):
-	game.startShoe(1)
+	game.startShoe(3)
 	game.getDeck().displayDeck()
 	game.showTable()
 	game.deal()
@@ -16,14 +11,11 @@ def test(game):
 	game.showTable()
 
 
+
 def main():
-
-	top = Tkinter.Tk()
-	top.mainloop()
-
 	game = blackjack.Blackjack()
 	test(game)
+	blackjack_app.gameScreen(game)
 	
-
 
 main()

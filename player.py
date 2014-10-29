@@ -12,6 +12,18 @@ class Player:
 	def hit(self, deck):
 		self.__hand.append(deck.getNextCard())
 
+	def stay(self):
+		print 'stay'
+
+	def split(self):
+		print 'split'
+
+	def doubleDown(self):
+		print 'double down'
+
+	def surrender(self):
+		print 'surrender'
+
 	def clearHand(self):
 		self.__hand = []
 		self.__total = 0
