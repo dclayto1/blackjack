@@ -3,7 +3,8 @@ import blackjack_app
 
 
 def test(game):
-	game.startShoe(3)
+	game.startShoe(1)
+	game.setNumPlayers(2)
 	game.getDeck().displayDeck()
 	game.showTable()
 	game.deal()

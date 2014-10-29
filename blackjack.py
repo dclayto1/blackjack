@@ -32,7 +32,18 @@ class Blackjack:
 		return self.__numPlayers
 
 	def setNumPlayers(self, num):
+		if num < self.__numPlayers:
+			self.__players = self.__players[0:num]
+		elif num > self.__numPlayers:
+			start = self.__numPlayers+1
+			end = num+1
+			for i in range(start,end):
+				name = "Player "+str(i)
+				self.__players.append(player.Player("PLAYER", name))
 		self.__numPlayers = num
+
+	def getPlayers(self):
+		return self.__players
 
 
 	def getDeck(self):

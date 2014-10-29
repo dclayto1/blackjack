@@ -79,11 +79,28 @@ def gameScreen(game):
 	gameWindow.minsize(640,480)
 	gameWindow.resizable(width=False, height=False)
 	optionButton = Button(gameWindow, text="Options", command=lambda:optionWindow(gameWindow, game))
-	img = PhotoImage(file=card_back)
-	card = Label(gameWindow, image=img)
-	card.img = img
-	card.pack(side=BOTTOM)
+	
+	playersFrame = Frame(gameWindow)
+	playersFrame.pack(side=BOTTOM)
+	playerFrames = []
+	for player in game.getPlayers():
+		playerFrame = Frame(playersFrame)
+		playerFrame.pack(side=RIGHT)
+
+		for eachCard in player.displayHand().split()[3:]:
+			name = "card_"+eachCard
+			img = PhotoImage(file=paths[name])
+			card = Label(playerFrame, image=img)
+			card.img = img
+			card.pack(side=LEFT)
+		
 
 
 	optionButton.pack(anchor=NW)
 	gameWindow.mainloop()
+
+
+
+
+
+
