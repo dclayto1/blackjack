@@ -1,6 +1,7 @@
 from Tkinter import *
 from card_paths import *
 import blackjack
+import player
 
 
 def optionWindow(gameWindow,game):
@@ -73,30 +74,103 @@ def optionWindow(gameWindow,game):
 	cancelButton.pack(side=LEFT)
 
 
-def gameScreen(game):
-	gameWindow = Tk()
-	gameWindow.title("Blackjack")
-	gameWindow.minsize(640,480)
-	gameWindow.resizable(width=False, height=False)
-	optionButton = Button(gameWindow, text="Options", command=lambda:optionWindow(gameWindow, game))
-	
-	playersFrame = Frame(gameWindow)
+def initHandFrames():
+	#DEALER FRAME
+	dealerFrame = Frame(gameWindow, bd=5, relief=RIDGE, width=gameWindow.winfo_width())
+	dealerFrame.pack()
+	Label(dealerFrame, text=game.getDealer().displayDealer()).pack(side=TOP)
+	for eachCard in game.getDealer().displayDealer().split()[2:]:
+		name = "card_"+eachCard
+		img = PhotoImage(file=paths[name])
+		card = Label(dealerFrame, image=img)
+		card.img = img
+		card.pack(side=LEFT)
+
+
+	#PLAYERS HANDS
+	playersFrame = Frame(gameWindow, bg="dark green", width=gameWindow.winfo_width())
 	playersFrame.pack(side=BOTTOM)
 	playerFrames = []
-	for player in game.getPlayers():
-		playerFrame = Frame(playersFrame)
+	for person in game.getPlayers():
+		playerFrame = Frame(playersFrame,bd=5, relief=RIDGE, width=gameWindow.winfo_width()/game.getNumPlayers())
 		playerFrame.pack(side=RIGHT)
+		Label(playerFrame, text=person.displayHand()).pack(side=TOP)
 
-		for eachCard in player.displayHand().split()[3:]:
+		for eachCard in person.displayHand().split()[3:]:
 			name = "card_"+eachCard
 			img = PhotoImage(file=paths[name])
 			card = Label(playerFrame, image=img)
 			card.img = img
 			card.pack(side=LEFT)
+
+
+def displayHands(game, gameWindow, playersFrame, playerList):
+	for eachFrame in playerList:
+		eachFrame.pack_forget()
+		eachFrame.destroy()
+
+
+	#DEALER FRAME
+	dealerFrame = Frame(gameWindow, bd=5, relief=RIDGE, width=gameWindow.winfo_width())
+	dealerFrame.pack()
+	playerList.append(dealerFrame)
+	Label(dealerFrame, text=game.getDealer().displayDealer()).pack(side=TOP)
+	for eachCard in game.getDealer().displayDealer().split()[2:]:
+		name = "card_"+eachCard
+		img = PhotoImage(file=paths[name])
+		card = Label(dealerFrame, image=img)
+		card.img = img
+		card.pack(side=LEFT)
+
+
+	#PLAYERS HANDS
+	for person in game.getPlayers():
+		playerFrame = Frame(playersFrame,bd=5, relief=RIDGE, width=gameWindow.winfo_width()/game.getNumPlayers())
+		playerFrame.pack(side=RIGHT)
+		playerList.append(playerFrame)
+		Label(playerFrame, text=person.displayHand()).pack(side=TOP)
+
+		for eachCard in person.displayHand().split()[3:]:
+			name = "card_"+eachCard
+			img = PhotoImage(file=paths[name])
+			card = Label(playerFrame, image=img)
+			card.img = img
+			card.pack(side=LEFT)
+
+
+
+def gameScreen(game):
+	gameWindow = Tk()
+	gameWindow.title("Blackjack")
+	gameWindow.minsize(640,480)
+	gameWindow.maxsize(1600,900)
+	gameWindow.resizable(width=True, height=True)
+	gameWindow.configure(bg="dark green")
+
+	def optionFunction():
+		optionWindow(gameWindow, game)
+		displayHands(game, gameWindow, playersFrame, playerList)
 		
+	def hitFunction():
+		game.playerHit(game.getPlayers()[0])
+		displayHands(game, gameWindow, playersFrame, playerList)
 
 
+	#OPTION BUTTON
+	optionButton = Button(gameWindow, text="Options", command=optionFunction)
 	optionButton.pack(anchor=NW)
+
+
+	#INITIALIZE FRAMES
+	playersFrame = Frame(gameWindow, bg="dark green", width=gameWindow.winfo_width())
+	playersFrame.pack(side=BOTTOM)
+	playerList = []
+
+
+	#PLAYER CHOICES
+	hitButton = Button(gameWindow, text="player 1 hit", command=hitFunction)
+	hitButton.pack()
+	
 	gameWindow.mainloop()
 
 

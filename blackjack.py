@@ -45,6 +45,9 @@ class Blackjack:
 	def getPlayers(self):
 		return self.__players
 
+	def getDealer(self):
+		return self.__dealer
+
 
 	def getDeck(self):
 		return self.__deck
@@ -69,9 +72,15 @@ class Blackjack:
 			each.clearHand()
 
 	def deal(self):
-		for player in self.__players:
-			player.hit(self.getDeck())
-		self.__dealer.hit(self.getDeck())
+		for i in range(2):
+			for player in self.__players:
+				player.hit(self.getDeck())
+			self.__dealer.hit(self.getDeck())
+
+
+	def playerHit(self, player):
+		player.hit(self.getDeck())
+		print player.displayHand()
 
 
 

@@ -4,11 +4,10 @@ import blackjack_app
 
 def test(game):
 	game.startShoe(1)
-	game.setNumPlayers(2)
+	game.setNumPlayers(3)
 	game.getDeck().displayDeck()
 	game.showTable()
-	game.deal()
-	game.deal()
+	game.deal()	
 	game.showTable()
 
 
