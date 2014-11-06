@@ -1,5 +1,6 @@
 from Tkinter import *
 from card_paths import *
+import tkMessageBox
 import blackjack
 import player
 
@@ -114,8 +115,15 @@ def displayHands(game, gameWindow, playersFrame, playerList):
 	dealerFrame = Frame(gameWindow, bd=5, relief=RIDGE, width=gameWindow.winfo_width())
 	dealerFrame.pack()
 	playerList.append(dealerFrame)
-	Label(dealerFrame, text=game.getDealer().displayDealer()).pack(side=TOP)
-	for eachCard in game.getDealer().displayDealer().split()[2:]:
+	dealerDisplay=""
+	if game.getTurn() == 0:
+		dealerDisplay = game.getDealer().displayHand().split()[2:]
+		Label(dealerFrame, text=game.getDealer().displayHand()).pack(side=TOP)
+	else:
+		dealerDisplay = game.getDealer().displayDealer().split()[2:]
+		Label(dealerFrame, text=game.getDealer().displayDealer()).pack(side=TOP)
+
+	for eachCard in dealerDisplay:
 		name = "card_"+eachCard
 		img = PhotoImage(file=paths[name])
 		card = Label(dealerFrame, image=img)
@@ -152,24 +160,37 @@ def gameScreen(game):
 		displayHands(game, gameWindow, playersFrame, playerList)
 		
 	def hitFunction():
-		game.playerHit(game.getPlayers()[0])
+		game.playerHit()
 		displayHands(game, gameWindow, playersFrame, playerList)
+
+	def dealFunction():
+		game.deal()
+		displayHands(game,gameWindow, playersFrame, playerList)
+
+	def stayFunction():
+		tkMessageBox.showinfo("New Turn", game.playerStay())
+		#game.playerStay()
+		displayHands(game,gameWindow, playersFrame, playerList)
+
 
 
 	#OPTION BUTTON
 	optionButton = Button(gameWindow, text="Options", command=optionFunction)
 	optionButton.pack(anchor=NW)
 
-
 	#INITIALIZE FRAMES
 	playersFrame = Frame(gameWindow, bg="dark green", width=gameWindow.winfo_width())
 	playersFrame.pack(side=BOTTOM)
 	playerList = []
 
-
 	#PLAYER CHOICES
-	hitButton = Button(gameWindow, text="player 1 hit", command=hitFunction)
+	hitButton = Button(gameWindow, text="Hit", command=hitFunction)
 	hitButton.pack()
+	dealButton = Button(gameWindow, text="Deal", command=dealFunction)
+	dealButton.pack()
+	stayButton = Button(gameWindow, text="Stay", command=stayFunction)
+	stayButton.pack()
+	
 	
 	gameWindow.mainloop()
 

@@ -9,6 +9,10 @@ class Player:
 		self.__playerType = playerType
 		self.__playerName = playerName
 
+
+	def getName(self):
+		return self.__playerName
+
 	def hit(self, deck):
 		self.__hand.append(deck.getNextCard())
 
@@ -29,14 +33,19 @@ class Player:
 		self.__total = 0
 
 	def getHandValue(self):
-		handCopy = self.__hand
+		self.__total = 0
+		handCopy = []
+		for eachCard in self.__hand:
+			handCopy.append(card.Card(eachCard.getSuit(), eachCard.getValue()))
 		handCopy.sort()
+
 		for each in handCopy:
 			if ((each.getValue()[0] == "A") and ((self.__total+each.getValue()[1]) > 21)):
 				self.__total += each.getValue()[2]
 			else:
 				self.__total += each.getValue()[1]
 
+		print self.__total
 		return self.__total
 
 
@@ -56,5 +65,6 @@ class Player:
 		for each in self.__hand:
 			cardStr += str(each) + " "
 		#cardStr += "\n"
+
 
 		return "%s's hand: %s" % (self.__playerName, cardStr)
